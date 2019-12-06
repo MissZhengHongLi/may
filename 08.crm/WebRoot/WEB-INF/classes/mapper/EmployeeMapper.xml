@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 该文件编写mybatis中的mapper接口里面的方法提供对应的sql语句 -->
+<mapper namespace="cn.sm1234.dao.EmployeeMapper">
+
+	<!-- 查询所有数据 -->
+	<select id="selectAll" resultType="cn.sm1234.domain.Employee" parameterType="cn.sm1234.domain.Employee">
+		SELECT * from employee
+		<where>
+			<if test="real_name != '' and real_name != null">
+				and real_name=#{real_name}
+			</if>
+			<if test="user_status != '' and user_status != null">
+				and user_status=#{user_status}
+			</if>
+			<if test="sale>0">
+				and sale=#{sale}
+			</if>
+		</where>
+		limit #{page},#{rows}
+	</select>
+	<select id="selectCount" resultType="int"  parameterType="cn.sm1234.domain.Employee">
+		SELECT count(1) from employee
+		<where>
+			<if test="real_name != '' and real_name != null">
+				and real_name=#{real_name}
+			</if>
+			<if test="user_status != '' and user_status != null">
+				and user_status=#{user_status}
+			</if>
+			<if test="sale>0">
+				and sale=#{sale}
+			</if>
+		</where>
+	</select>
+
+	<!-- 添加 -->
+	<insert id="addEmp" parameterType="cn.sm1234.domain.Employee">
+		INSERT INTO employee
+		(
+		real_name,
+		sex,
+		mtel,
+		email,
+		sale,
+		employdate,
+		user_status,
+		job
+		)
+		VALUES
+		(
+		#{real_name},
+		#{sex},
+		#{mtel},
+		#{email},
+		#{sale},
+		#{employdate},
+		#{user_status},
+		#{job}
+		)
+	</insert>
+
+
+	<!-- 根据id修改数据 -->
+	<update id="updateEmp"
+		parameterType="cn.sm1234.domain.Employee">
+		UPDATE employee
+		SET
+		real_name=#{real_name},
+		sex=#{sex},
+		mtel=#{mtel},
+		email=#{email},
+		sale=#{sale},
+		employdate=#{employdate},
+		user_status=#{user_status},
+		job=#{job}
+		WHERE
+		user_id = #{user_id}
+	</update>
+
+	<!-- 删除 -->
+	<delete id="deleteEmp" parameterType="Integer">
+		DELETE FROM employee where user_id=#{user_id}
+	</delete>
+
+</mapper>
